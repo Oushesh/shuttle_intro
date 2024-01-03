@@ -1,3 +1,4 @@
+workspace = { members = ["shuttle_fullstack/hello-world"] }
 [package]
 name = "llm-workflow"
 version = "0.1.0"

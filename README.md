@@ -12,5 +12,8 @@ Intro to shuttle to build a robust fullstack-app
 
 ## Ref: 
     * https://crates.io/crates/cargo-shuttle
-     
+
+## Advantages of Rust:
+   * you can compile the rust to .so cdynamic libary.
+   * 
 
