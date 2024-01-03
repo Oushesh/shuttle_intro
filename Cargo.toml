@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 axum = "0.6.20"
+axum-openapi = "0.0.0"
 shuttle-axum = "0.35.2"
 shuttle-runtime = "0.35.2"
 tokio = "1.28.2"
