@@ -1,13 +1,16 @@
+use std::path::PathBuf;
 use axum::{
-    Json,
-    extract::{Path, State},
-    http::StatusCode,
-    response::IntoResponse,
     Router,
-    routing::{post,get}};
-use serde::{Deserialize, Serialize};
-use shuttle_runtime::CustomError;
-use sqlx::{FromRow, PgPool};
+    routing::get,
+};
+
+use utoipa::{
+    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
+    Modify, OpenApi,
+};
+
+use utoipa_swagger_ui::SwaggerUi;
+use tower_http::services::ServeDir;
 
 //Sqlx write sql query in the rust code
 /*
@@ -56,10 +59,9 @@ async fn hello_world() -> &'static str {
 async fn greet_world() -> &'static str {"Hey!"}
 async fn todos() -> &'static str {"What can I do for you?"}
 
-
 #[shuttle_runtime::main]
-
 async fn main() -> shuttle_axum::ShuttleAxum{
+
 //async fn main( #[shuttle_shared_db::Postgres] pool: PgPool)
 //    -> shuttle_axum::ShuttleAxum {
     //sqlx::migrate!("./migrations")
@@ -71,11 +73,14 @@ async fn main() -> shuttle_axum::ShuttleAxum{
     //    .await
     //    .map_err(CustomError::new)?;
     //let state = MyState{ pool };
-
+    #[derive(OpenApi)]
+    struct ApiDoc;
     let router = Router::new().
         route("/", get(hello_world))
         .route("/greetings",get(greet_world))
-        .route("/get_todo",get(todos));
+        .route("/get_todo",get(todos))
+        .merge(SwaggerUi::new("/swagger-ui").url("api-doc/openapi.json",ApiDoc::OpenAPI()))
+        .nest_service("/assets",ServeDir::new(PathBuf::from("assets")));
         //.route("/todos",post(add))
         //.route("/todos/:id",get(retrieve))
         //.with_state(state);
