@@ -6,6 +6,8 @@ edition = "2021"
 [dependencies]
 axum = "0.6.20"
 shuttle-axum = "0.35.2"
+shuttle-shared-db = { version = "0.35.2", features = ["postgres"] }
 shuttle-runtime = "0.35.2"
 tokio = "1.28.2"
 tracing = "0.1.40"
+sqlx = { version = "0.7.1", features = ["runtime-tokio-native-tls", "postgres"] }
