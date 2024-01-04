@@ -10,11 +10,14 @@ use shuttle_runtime::CustomError;
 use sqlx::{FromRow, PgPool};
 
 //Sqlx write sql query in the rust code
+/*
 #[derive(Clone)]
 struct MyState {
     pool: PgPool,
 }
+*/
 
+/*
 async fn retrieve(
     Path(id): Path<i32>,
     State(state): State<MyState>
@@ -27,7 +30,9 @@ async fn retrieve(
         Err(e) => Err((StatusCode::BAD_REQUEST, e.to_string()))
     }
 }
+*/
 
+/*
 async fn add(
     State(state): State<MyState>,
     Json(data): Json<TodoNew>,
@@ -42,8 +47,7 @@ async fn add(
     }
 }
 
-
-
+*/
 
 async fn hello_world() -> &'static str {
     "Hello, world!"
@@ -54,27 +58,30 @@ async fn todos() -> &'static str {"What can I do for you?"}
 
 
 #[shuttle_runtime::main]
-async fn main( #[shuttle_shared_db::Postgres] pool: PgPool)
-    -> shuttle_axum::ShuttleAxum {
-    sqlx::migrate!("./migrations")
-        .run(&pool)
-        .await
-        .map_err(CustomError::new)?;
+
+async fn main() -> shuttle_axum::ShuttleAxum{
+//async fn main( #[shuttle_shared_db::Postgres] pool: PgPool)
+//    -> shuttle_axum::ShuttleAxum {
+    //sqlx::migrate!("./migrations")
+    //    .run(&pool)
+    //    .await
+    //    .map_err(CustomError::new)?;
 
     //sqlx::migrate!().run(&pool)
     //    .await
     //    .map_err(CustomError::new)?;
-    let state = MyState{ pool };
+    //let state = MyState{ pool };
+
     let router = Router::new().
         route("/", get(hello_world))
         .route("/greetings",get(greet_world))
-        .route("/get_todo",get(todos))
-        .route("/todos",post(add))
-        .route("/todos/:id",get(retrieve))
-        .with_state(state);
+        .route("/get_todo",get(todos));
+        //.route("/todos",post(add))
+        //.route("/todos/:id",get(retrieve))
+        //.with_state(state);
     Ok(router.into())
 }
-
+/*
 #[derive(Deserialize)]
 struct TodoNew {
     pub note: String,
@@ -86,6 +93,6 @@ struct Todo {
     pub note: String,
 }
 
-
+*/
 
 
